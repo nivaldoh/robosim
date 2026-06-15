@@ -1,0 +1,30 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "robosim"
+version = "0.0.0"
+description = "A minimal robotics benchmark built from scratch (C++ core + Python) for learning."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+env = ["gymnasium>=0.29"]
+viz = ["rerun-sdk>=0.16"]
+dev = ["pytest>=7"]
+all = ["robosim[env,viz,dev]"]
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+build-dir = "build/skbuild/{wheel_tag}"
+wheel.packages = ["python/robosim"]
+
+# Allow Eigen 3.4.0's older cmake_minimum_required under CMake 4.x.
+[tool.scikit-build.cmake.define]
+CMAKE_POLICY_VERSION_MINIMUM = "3.5"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/py"]
+addopts = "-q"

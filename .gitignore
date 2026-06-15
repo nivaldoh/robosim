@@ -1,0 +1,29 @@
+# Build artifacts
+/build/
+*.o
+*.a
+*.so
+*.dylib
+*.pyd
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# CMake / scikit-build-core
+CMakeCache.txt
+CMakeFiles/
+/_skbuild/
+
+# rerun recordings
+*.rrd
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
