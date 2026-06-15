@@ -67,6 +67,9 @@ scripts/          demo_pointreach.py
 
 - CMake 4.x + Eigen 3.4.0 needs `-DCMAKE_POLICY_VERSION_MINIMUM=3.5` (already set
   for the pip build in `pyproject.toml`).
-- WSL2/headless: rerun **saves `.rrd`**; `--spawn` needs a display.
+- Viz: rerun **saves `.rrd`** (open with `rerun file.rrd`); `--spawn` opens a live
+  window. On Windows 11 WSLg, `--spawn` works — the viewer auto-points
+  `XDG_RUNTIME_DIR` at `/mnt/wslg/runtime-dir` to find the Wayland socket.
+  Truly headless (no display): use save mode.
 - After editing C++, re-run `pip install -e . --no-build-isolation` to rebuild
   the extension.

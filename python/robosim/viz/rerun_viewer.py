@@ -3,15 +3,17 @@
 The C++ core exposes body world positions; this logs the point mass, its target,
 and a trail to a rerun recording. Two ways to view:
 
-- **save** (default, headless/WSL-friendly): pass ``save_path=...`` and open the
+- **save** (default, works headless): pass ``save_path=...`` and open the
   resulting file with ``rerun episode.rrd`` (or the web viewer).
-- **spawn** (desktop with a display): pass ``spawn=True`` to open the native
-  viewer live.
+- **spawn** (any display, incl. WSLg on Windows 11): pass ``spawn=True`` to open
+  the native viewer live; the WSLg Wayland socket is located automatically.
 
 Tested against rerun-sdk 0.33 (time API: ``set_time(timeline, sequence=/duration=)``).
 """
 
 from __future__ import annotations
+
+import os
 
 import numpy as np
 
@@ -30,7 +32,12 @@ class PointReachViewer:
         if save_path is not None:
             self._rec.save(str(save_path))
         if spawn:
-            self._rec.spawn()  # requires a display; use save on headless/WSL
+            # WSLg keeps the Wayland socket under /mnt/wslg/runtime-dir, not the
+            # default XDG_RUNTIME_DIR; point at it so the viewer finds the compositor.
+            wayland = os.environ.get("WAYLAND_DISPLAY", "wayland-0")
+            if os.path.exists(f"/mnt/wslg/runtime-dir/{wayland}"):
+                os.environ["XDG_RUNTIME_DIR"] = "/mnt/wslg/runtime-dir"
+            self._rec.spawn()  # opens the native viewer; needs a display
         self._trail: list[np.ndarray] = []
         self._step = 0
 
